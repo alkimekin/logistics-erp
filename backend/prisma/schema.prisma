@@ -1,0 +1,301 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @unique @default(autoincrement())
+  email    String @unique
+  password String
+
+  name    String @default("")
+  surname String @default("")
+
+  role Role @default(USER)
+
+  liftWorkOrders LiftWorkOrder[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BaseProduct {
+  id           Int    @id @default(autoincrement())
+  manufacturer String
+  name         String
+
+  products         Product[]
+  dispatchProducts DispatchProduct[]
+  palettes         Palette[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  serialNumber String @id
+
+  baseProduct   BaseProduct? @relation(fields: [baseProductId], references: [id], onDelete: Cascade)
+  baseProductId Int?
+
+  barcodeNumber String? @unique
+
+  gtinNumber     String
+  lotNumber      Int
+  productionDate String?
+  expirationDate String?
+
+  parcel   Parcel? @relation(fields: [parcelId], references: [id], onDelete: SetNull)
+  parcelId String?
+
+  order   Order? @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  orderId Int?
+
+  state        ProductState  @default(UNDAMAGED)
+  status       ProductStatus
+  restiriction Restirictions @default(NONE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Parcel {
+  id       String    @id
+  products Product[]
+
+  palette   Palette? @relation(fields: [paletteId], references: [id], onDelete: SetNull)
+  paletteId String?
+
+  order   Order? @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  orderId Int?
+
+  status       ParcelStatus
+  restiriction Restirictions @default(NONE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Palette {
+  id String @id
+
+  hangar   Hangar? @relation(fields: [hangarId], references: [id], onDelete: SetNull)
+  hangarId Int?
+
+  rack   Rack? @relation(fields: [rackId], references: [id], onDelete: SetNull)
+  rackId Int?  @unique
+
+  baseProduct   BaseProduct? @relation(fields: [baseProductId], references: [id], onDelete: SetNull)
+  baseProductId Int?
+
+  parcels Parcel[]
+
+  productCode String?
+  lotNumber   String?
+
+  productNumber  Int     @default(0)
+  expirationDate String?
+
+  arrival   Arrival? @relation(fields: [arrivalId], references: [id], onDelete: SetNull)
+  arrivalId Int?
+
+  isWatchfileImported Boolean @default(false)
+
+  order   Order? @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  orderId Int?
+
+  status       PaletteStatus
+  restiriction Restirictions @default(NONE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Rack {
+  id Int @id @unique
+
+  hangar   Hangar? @relation(fields: [hangarId], references: [id], onDelete: SetNull)
+  hangarId Int?
+
+  palette Palette?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Hangar {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  palettes Palette[]
+  racks    Rack[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Arrival {
+  id            Int     @id @default(autoincrement())
+  companyName   String
+  invoiceNumber String?
+
+  palettes Palette[]
+
+  maxPaletteSize Int?
+  maxParcelSize  Int?
+
+  watchfileLoading Boolean          @default(false)
+  watchfileLoaded  Boolean          @default(false)
+  watchfileErrors  WatchfileError[]
+
+  status       ArrivalStatus
+  restiriction Restirictions @default(NONE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DispatchProduct {
+  id Int @id @default(autoincrement())
+
+  baseProduct   BaseProduct? @relation(fields: [baseProductId], references: [id], onDelete: Cascade)
+  baseProductId Int?
+
+  count     Int
+  lotNumber String
+
+  dispatchNote   DispatchNote? @relation(fields: [dispatchNoteId], references: [id], onDelete: Cascade)
+  dispatchNoteId Int?
+}
+
+model DispatchNote {
+  id            Int     @id @default(autoincrement())
+  companyName   String?
+  invoiceNumber String
+  ettnCode      String
+
+  products DispatchProduct[]
+
+  order   Order? @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  orderId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id          Int     @id @default(autoincrement())
+  companyName String?
+
+  dispatchNotes DispatchNote[]
+  liftWorkOrder LiftWorkOrder?
+
+  products Product[]
+  parcels  Parcel[]
+  palettes Palette[]
+
+  status OrderStatus @default(ON_PREPARATION)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LiftWorkOrder {
+  id Int @id @default(autoincrement())
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  order   Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId Int?   @unique
+
+  status WorkOrderStatus @default(IN_PROGRESS)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WatchfileError {
+  id   Int    @id @default(autoincrement())
+  type String
+  text String
+
+  arrival   Arrival @relation(fields: [arrivalId], references: [id], onDelete: Cascade)
+  arrivalId Int
+}
+
+enum Role {
+  USER
+  LIFTER
+  PREPARER
+  ADMIN
+  SERVICE_ACCOUNT
+}
+
+enum ProductState {
+  DAMAGED
+  UNDAMAGED
+}
+
+enum ProductStatus {
+  ON_RACK
+  ON_FLOOR
+  ON_SECONDERY
+  ON_PREPARATION
+  ON_TRANSFER
+  DELIVERED
+}
+
+enum ParcelStatus {
+  ON_RACK
+  ON_FLOOR
+  ON_PREPARATION
+  ON_TRANSFER
+  DELIVERED
+}
+
+enum PaletteStatus {
+  ON_RACK
+  ON_FLOOR
+  ON_PREPARATION
+  ON_TRANSFER
+  DELIVERED
+}
+
+enum Restirictions {
+  NONE
+  WAITS_PRODUCTION_STATEMENT
+  WAITS_WATCHFILE
+  WAITS_FORKLIFT
+  WAITS_PREPARATION
+  WAITS_TRANSFER_STATEMENT
+  WAITS_TRANSFER
+}
+
+enum ArrivalStatus {
+  ENTERED_HANGAR
+  WATCHFILE_IMPORTED
+  CONFIRMED
+}
+
+enum OrderStatus {
+  ON_PREPARATION
+  ON_TRANSFER
+  DELIVERED
+}
+
+enum WorkOrderStatus {
+  IN_PROGRESS
+  DONE
+}
+
+enum ContainerType {
+  UNKNOWN
+  PRODUCT
+  PARCEL
+  PALETTE
+}

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "name" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "surname" TEXT NOT NULL DEFAULT '';

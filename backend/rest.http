@@ -1,0 +1,279 @@
+GET http://localhost:8000/api/auth
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJoYWthbmxvamlzdGlrLWF1dGgtZW5kcG9pbnQiLCJ1c2VyIjoiYmlsZ2Uua2FnYW44QGdtYWlsLmNvbSIsImlhdCI6MTY4MzAxNzk4NiwiZXhwIjoxNjgzMDQ2Nzg2fQ.TzN-r4EO_-SyXKsUMXXxg2XqOiuK68QOrBl2819H0nI
+###
+
+GET http://localhost:8000/api/auth/getAllUsers
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJoYWthbmxvamlzdGlrLWF1dGgtZW5kcG9pbnQiLCJ1c2VyIjoiYmlsZ2Uua2FnYW44QGdtYWlsLmNvbSIsImlhdCI6MTY4MzAxNzk4NiwiZXhwIjoxNjgzMDQ2Nzg2fQ.TzN-r4EO_-SyXKsUMXXxg2XqOiuK68QOrBl2819H0nI
+###
+
+GET http://localhost:8000/api/auth/getTokenUser
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJoYWthbmxvamlzdGlrLWF1dGgtZW5kcG9pbnQiLCJ1c2VyIjoiYmlsZ2Uua2FnYW44QGdtYWlsLmNvbSIsImlhdCI6MTY4MTQ1NzExMiwiZXhwIjoxNjgxNDg1OTEyfQ.SKGyXvCh8WH2iFtMvvXWlqAm_pq6k6AdxmAKEP2YTc4
+###
+
+GET http://localhost:8000/api/auth/2
+content-type: application/json
+
+###
+
+POST http://localhost:8000/api/auth/register
+content-type: application/json
+
+# {
+#     "email": "blckwlf02@gmail.com",
+#     "password": "18976200362"
+# }
+
+# {
+#     "email": "halukbenna@gmail.com",
+#     "password": "deneme123"
+# }
+
+# {
+#     "email": "forklift@gmail.com",
+#     "password": "deneme123"
+# }
+
+{
+     "email": "alkim@gmail.com",
+     "password": "deneme123"   
+}
+
+
+###
+
+POST http://localhost:8000/api/auth/login
+content-type: application/json
+
+# {
+#     "email": "halukbenna@gmail.com",
+#     "password": "deneme123"
+# }
+
+{
+    "email": "bilge.kagan8@gmail.com",
+    "password": "deneme123"
+}
+
+# {
+#     "email": "blckwlf02@gmail.com",
+#     "password": "18976200362"
+# }
+
+###
+
+GET http://localhost:8000/api/product/base
+content-type: application/json
+
+###
+
+GET http://localhost:8000/api/product/all
+content-type: application/json
+
+###
+DELETE  http://localhost:8000/api/product/all
+content-type: application/json
+
+
+###
+POST http://localhost:8000/api/arrival/new
+Content-Type: application/json
+
+{
+    "companyName": "Sanovel",
+    "invoiceNumber": "3421413243214",
+    "palettes": [
+        {
+            "baseProductId": "1",
+            "hangarId": "2",
+            "paletteId": "342432",
+            "productCode": "4453534",
+            "lotNumber": "676767",
+            "expirationDate": "20.11.2030",
+            "productNumber": "24000"
+        },
+        {
+            "baseProductId": "4",
+            "hangarId": "1",
+            "paletteId": "23432423",
+            "productCode": "34274328",
+            "lotNumber": "2384374",
+            "expirationDate": "21.03.2026",
+            "productNumber": "12000"
+        }
+    ]
+}
+
+###
+POST http://localhost:8000/api/arrival/import_xml?arrivalId=8
+Content-Type: application/xml
+
+< ./data/ATOR_40_MG_30_FTB_PTS_20032033.xml
+
+
+### 
+GET http://localhost:8000/api/storage/hangar/names
+Content-Type: application/json
+
+### 
+GET http://localhost:8000/api/storage/hangar/all
+Content-Type: application/json
+
+### 
+GET http://localhost:8000/api/storage/rack/ids
+Content-Type: application/json
+
+###
+GET http://localhost:8000/api/storage/emptyRacks
+Content-Type: application/json
+
+### 
+GET http://localhost:8000/api/arrival/inHangar
+Content-Type: application/json
+
+### 
+GET http://localhost:8000/api/arrival/watchfile
+Content-Type: application/json
+
+###
+GET http://localhost:8000/api/storage/palette/unique?paletteId=3421fqef22
+Content-Type: application/json
+
+###
+GET http://localhost:8000/api/storage/palette/update
+Content-Type: application/json
+
+###
+
+GET http://localhost:8000/api/dispatch/all
+Content-Type: application/json
+
+###
+
+GET http://localhost:8000/api/dispatch/allWithNoOrder
+Content-Type: application/json
+
+###
+
+POST http://localhost:8000/api/dispatch/new
+Content-Type: application/json
+
+{
+    "companyName": "Farmavip",
+    "invoiceNumber": "3421413243213",
+    "ettnCode": "dfsdfasfasfasfad",
+    "dispatchProducts": [
+        {
+            "baseProductId": 5,
+            "lotNumber": "224799",
+            "count": 550
+        }
+    ]
+}
+
+###
+GET http://localhost:8000/api/order/all
+Content-Type: application/json
+
+###
+POST http://localhost:8000/api/order/groupProductsWithDispatchNotes
+Content-Type: application/json
+
+{
+    "dispatchNoteIds": [1, 2, 3]
+}
+
+###
+POST http://localhost:8000/api/dispatch/createOrderWithWorkOrders
+Content-Type: application/json
+
+{
+    "dispatchNoteIds": [1, 2, 3]
+}
+
+###
+GET http://localhost:8000/api/dispatch/liftWorkOrdersInOperatorView?id=2
+Content-Type: application/json
+
+
+###
+POST http://localhost:8000/api/dispatch/endLiftWorkOrder
+Content-Type: application/json
+
+{
+    "orderId": 19,
+
+    "paletteIds": ["00386805301300057087"],
+
+    "parcelIds": ["00286805301301559521", 
+                  "00286805301301559538", 
+                  "00286805301301559545", 
+                  "00286805301301559552", 
+                  "00286805301301559606", 
+                  "00286805301301559613",
+                  "00286805301301559620",
+                  "00286805301301559637"],
+
+    "productIds": ["2219013117", 
+                   "2219013118",
+                   "2219013120", 
+                   "2219013121", 
+                   "2219013122", 
+                   "2219013123", 
+                   "2219013124", 
+                   "2219013125", 
+                   "2219013126", 
+                   "2219013127", 
+                   "2219013128", 
+                   "2219013129", 
+                   "2219013130", 
+                   "2219013131",
+                   "2219013133", 
+                   "2219013134", 
+                   "2219013135",
+                   "2219013136",
+                   "2219013137", 
+                   "2219013138",
+                   "2219013139",
+                   "2219013142", 
+                   "2219013143", 
+                   "2219013145",
+                   "2219013146",
+                   "2219013147",
+                   "2219013148",
+                   "2219013149",
+                   "2219013150",
+                   "2219013151",
+                   "2219013179", 
+                   "2219013180", 
+                   "2219013181", 
+                   "2219013182", 
+                   "2219013183", 
+                   "2219013184", 
+                   "2219013186", 
+                   "2219013187", 
+                   "2219013188", 
+                   "2219013189", 
+                   "2219013190", 
+                   "2219013191", 
+                   "2219013192", 
+                   "2219013193", 
+                   "2219013194", 
+                   "2219013195", 
+                   "2219013196", 
+                   "2219013197", 
+                   "2219013198", 
+                   "2219013199", 
+                   "2219013200", 
+                   "2219013201", 
+                   "2219013202", 
+                   "2219013203", 
+                   "2219013204", 
+                   "2219013205", 
+                   "2219013206", 
+                   "2219013207", 
+                   "2219013208",
+                   "2219013209"]
+}

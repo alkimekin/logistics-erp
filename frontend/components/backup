@@ -1,0 +1,250 @@
+<div className="flex flex-col justify-center items-center h-full w-full px-24 py-16">
+            <form onSubmit={handleSubmit} className="w-full">
+              <div className="shadow overflow-hidden sm:rounded-md">
+                <div className="px-4 py-5 bg-white sm:p-6">
+                  <div className="flex flex-col space-y-4">
+                    {/* Firma Ismi */}
+                    <div className="flex flex-col w-1/2">
+                      <label
+                        htmlFor="companyName"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Firma Ismi
+                      </label>
+                      <input
+                        type="text"
+                        name="companyName"
+                        value={companyName || ""}
+                        onChange={(e) => handleCompanyNameChange(e)}
+                        id="companyName"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
+
+                    {/* Irsaliye Numarasi */}
+                    <div className="flex flex-col w-1/2">
+                      <label
+                        htmlFor="invoiceNumber"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Irsaliye Numarasi
+                      </label>
+                      <input
+                        type="text"
+                        name="invoiceNumber"
+                        value={invoiceNumber || ""}
+                        onChange={(e) => handleInvoiceNumberChange(e)}
+                        id="invoiceNumber"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
+
+                    <div className="flex pt-4 block text-lg font-medium text-gray-700">
+                      Paletler
+                    </div>
+
+                    {palettes.map((palette, index) => (
+                      <div className="grid grid-cols-4 gap-6 py-6">
+                        {/* Ilac Ismi */}
+                        <div className="col-span-1">
+                          <label
+                            htmlFor="baseProductId"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Ilac Ismi
+                          </label>
+                          <select
+                            id="baseProductId"
+                            name="baseProductId"
+                            value={palette.baseProductId}
+                            onChange={(e) => handlePaletteChange(index, e)}
+                            className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          >
+                            <option value="-1">
+                              {" "}
+                              - - - - - - - - - - - - - -
+                            </option>
+                            {baseProducts.map((baseProduct) => (
+                              <option value={baseProduct.id}>
+                                {baseProduct.manufacturer} - {baseProduct.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        {/* Ambar Ismi */}
+                        <div className="col-span-1">
+                          <label
+                            htmlFor="hangarId"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Ambar Ismi
+                          </label>
+                          <select
+                            id="hangarId"
+                            name="hangarId"
+                            value={palette.hangarId}
+                            onChange={(e) => handlePaletteChange(index, e)}
+                            className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          >
+                            <option value="-1">
+                              {" "}
+                              - - - - - - - - - - - - - -
+                            </option>
+                            {Object.values(hangars).map((hangar) => (
+                              <option value={hangar.id}>{hangar.name}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        {/* Raf Numarasi */}
+                        <div className="col-span-1">
+                          <label
+                            htmlFor="rackId"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Raf Numarasi
+                          </label>
+                          <select
+                            id="rackId"
+                            name="rackId"
+                            value={palette.rackId}
+                            onChange={(e) => handlePaletteChange(index, e)}
+                            className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          >
+                            <option value="-1">
+                              {" "}
+                              - - - - - - - - - - - - - -
+                            </option>
+                            {Object.values(racks).map((rack) =>
+                              rack.palette == null ? (
+                                <option value={rack.id}>{rack.id}</option>
+                              ) : (
+                                <></>
+                              )
+                            )}
+                          </select>
+                        </div>
+
+                        {/* Palet Numarasi */}
+                        <div className="col-span-1">
+                          <label
+                            htmlFor="paletteId"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Palet Numarasi
+                          </label>
+                          <input
+                            type="text"
+                            name="paletteId"
+                            value={palette.paletteId || ""}
+                            onChange={(e) => handlePaletteChange(index, e)}
+                            id="paletteId"
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
+                        </div>
+
+                        {/* Malzeme Kodu */}
+                        <div className="col-span-1">
+                          <label
+                            htmlFor="productCode"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Malzeme Kodu
+                          </label>
+                          <input
+                            type="text"
+                            name="productCode"
+                            value={palette.productCode || ""}
+                            onChange={(e) => handlePaletteChange(index, e)}
+                            id="productCode"
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
+                        </div>
+
+                        {/* Lot Numarasi */}
+                        <div className="col-span-1">
+                          <label
+                            htmlFor="lotNumber"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Lot Numarasi
+                          </label>
+                          <input
+                            type="text"
+                            name="lotNumber"
+                            value={palette.lotNumber || ""}
+                            onChange={(e) => handlePaletteChange(index, e)}
+                            id="lotNumber"
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
+                        </div>
+
+                        {/* SKT Numarasi */}
+                        <div className="col-span-1">
+                          <label
+                            htmlFor="expirationDate"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            S.K.T
+                          </label>
+                          <input
+                            type="text"
+                            name="expirationDate"
+                            value={palette.expirationDate || ""}
+                            onChange={(e) => handlePaletteChange(index, e)}
+                            id="rackId"
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
+                        </div>
+
+                        {/* Urun adedi */}
+                        <div className="col-span-1">
+                          <label
+                            htmlFor="productNumber"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Urun Adedi
+                          </label>
+                          <input
+                            type="text"
+                            name="productNumber"
+                            value={palette.productNumber || ""}
+                            onChange={(e) => handlePaletteChange(index, e)}
+                            id="productNumber"
+                            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          />
+                        </div>
+
+                        {index ? (
+                          <button
+                            type="button"
+                            onClick={() => removePalette(index)}
+                            className="inline-flex justify-center col-end-5 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                          >
+                            Sil
+                          </button>
+                        ) : null}
+                      </div>
+                    ))}
+
+                    <button
+                      type="button"
+                      onClick={() => addPalette()}
+                      className="flex w-fit pt-4 text-base font-medium text-blue-500 hover:text-blue-700"
+                    >
+                      Yeni Palet Ekle +
+                    </button>
+                  </div>
+                </div>
+                <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                  <button
+                    type="submit"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Kaydet
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
